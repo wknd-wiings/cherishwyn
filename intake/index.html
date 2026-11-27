@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cherishwyn — the care binder — Tell Us About Your Loved One</title>
+<style>
+  :root{
+    --sage:#4E6B4F; --sage-dark:#3D5540; --sage-light:#E7EDE1;
+    --cream:#FFF9F0; --band:#F7ECD7; --bronze:#8A5A2B; --ink:#2E2A26;
+    --gray:#6B6259; --rule:#D8C9A8; --red:#8E2F22;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);
+       font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.55}
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 64px}
+  header.top{text-align:center;padding:18px 0 6px}
+  header.top h1{color:var(--sage);font-size:30px;margin:0 0 4px}
+  header.top p{color:var(--gray);margin:0;font-size:16px}
+  .progress{margin:18px 0 4px;background:#EFE6D2;border-radius:999px;height:14px;
+            box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
+  .progress > div{height:100%;border-radius:999px;width:0%;
+    background:linear-gradient(180deg,#6E8B6F,var(--sage));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);transition:width .25s}
+  .progress-label{font-size:15px;color:var(--gray);text-align:center;margin:6px 0 14px}
+  .card{background:#fff;border:1px solid var(--rule);border-radius:14px;
+        box-shadow:inset 0 2px 0 rgba(255,255,255,.9),inset 0 -2px 0 rgba(138,90,43,.10),
+                   0 3px 10px rgba(46,42,38,.10);padding:26px 22px}
+  .calm{font-size:15px;color:var(--sage-dark);text-align:center;margin:2px 0 10px}
+  .pace{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:16px}
+  .pace select{width:auto;min-height:48px;font-size:16px;padding:8px 10px}
+  .btn.ghost{background:linear-gradient(180deg,#FFFDF8,var(--sage-light));color:var(--sage-dark);
+    border-color:var(--sage);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 4px rgba(46,42,38,.18)}
+  .btn.quiet-danger{background:none;border-color:var(--rule);color:var(--gray);
+    box-shadow:none;font-size:15px;min-height:44px;padding:6px 14px}
+  .comeback{background:var(--sage-light);border:1px solid var(--sage);border-radius:12px;
+    padding:16px 18px;margin-top:16px}
+  .comeback textarea,.comeback input[type=text]{background:#FFFDF8}
+  .comeback code{word-break:break-all;font-size:13px}
+  .part{color:var(--bronze);font-weight:bold;font-size:15px;letter-spacing:.04em;
+        text-transform:uppercase;margin:0 0 6px}
+  h2.q{font-size:24px;line-height:1.3;margin:0 0 10px;color:var(--ink)}
+  .help{background:var(--sage-light);border-left:5px solid var(--sage);
+        padding:12px 14px;border-radius:0 10px 10px 0;font-size:17px;margin:0 0 18px}
+  label.flabel{display:block;font-weight:bold;font-size:16px;margin:14px 0 6px;color:var(--sage-dark)}
+  input[type=text],input[type=tel],textarea,select{
+    width:100%;font:inherit;font-size:18px;padding:13px 14px;min-height:52px;
+    border:2px solid var(--rule);border-radius:10px;background:#FFFDF8;color:var(--ink)}
+  textarea{min-height:120px;resize:vertical}
+  input:focus,textarea:focus,select:focus{outline:3px solid var(--bronze);outline-offset:1px;border-color:var(--bronze)}
+  .btn{appearance:none;border:1px solid var(--sage-dark);cursor:pointer;font:inherit;
+    font-weight:bold;font-size:19px;color:#fff;min-height:56px;padding:12px 26px;
+    border-radius:12px;background:linear-gradient(180deg,#6E8B6F,var(--sage) 55%,var(--sage-dark));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 3px 6px rgba(46,42,38,.30);
+    transition:transform .12s,box-shadow .12s}
+  .btn:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(46,42,38,.30)}
+  .btn:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+  .btn.secondary{background:linear-gradient(180deg,#FFFDF8,var(--band));color:var(--sage-dark);
+    border-color:var(--bronze)}
+  .btn.small{min-height:48px;font-size:16px;padding:8px 18px}
+  .btn.danger{background:linear-gradient(180deg,#A8493B,var(--red));border-color:#6E2115}
+  .nav{display:flex;gap:12px;justify-content:space-between;margin-top:24px;flex-wrap:wrap}
+  .saved{font-size:14px;color:var(--gray);text-align:center;margin-top:12px;min-height:20px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 4px}
+  .chip{cursor:pointer;font:inherit;font-size:17px;min-height:52px;padding:10px 18px;
+    border-radius:999px;border:2px solid var(--sage);color:var(--sage-dark);
+    background:linear-gradient(180deg,#FFFDF8,var(--sage-light));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 4px rgba(46,42,38,.18);
+    transition:transform .12s,box-shadow .12s}
+  .chip:active{transform:translateY(1px)}
+  .chip:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+  .chip[aria-pressed="true"]{background:linear-gradient(180deg,#6E8B6F,var(--sage));
+    color:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.30)}
+  .entry{border:1px solid var(--rule);border-radius:12px;padding:6px 16px 16px;margin:0 0 16px;background:#FFFDF8}
+  .entry-head{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .entry-head b{color:var(--bronze)}
+  .checkrow{display:flex;gap:12px;align-items:flex-start;padding:12px 10px;border-bottom:1px solid var(--rule);
+    cursor:pointer;min-height:52px}
+  .checkrow input{width:26px;height:26px;margin-top:2px;flex:none;accent-color:var(--sage)}
+  .checkrow span{font-size:18px}
+  .note{font-size:15px;color:var(--gray)}
+  .warn{background:#FBF3DC;border:1px solid var(--bronze);border-radius:10px;padding:12px 14px;font-size:16px}
+  .big-actions{display:grid;gap:14px;margin-top:18px}
+  a.btnlink{display:inline-block;text-decoration:none;text-align:center}
+  .resume{background:var(--band);border:1px solid var(--bronze);border-radius:12px;
+    padding:14px 16px;margin:0 0 16px;font-size:17px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Cherishwyn</h1>
+    <p>the care binder — because they matter</p>
+    <p>Answer a few questions. We write the binder for you.</p>
+  </header>
+
+  <div id="resume" class="resume hidden">
+    <b>Welcome back.</b> Your answers are saved on this device, right where you left them.
+    <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn small" id="resume-go">Continue where I left off</button>
+      <button class="btn small secondary" id="resume-fresh">Start over</button>
+    </div>
+  </div>
+
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+  <div class="progress-label" id="bar-label"></div>
+  <p class="calm">Your answers save as you go — you can close this and come back anytime.</p>
+
+  <main class="card" id="card"></main>
+  <div class="saved" id="saved"></div>
+
+  <div class="pace" id="pace">
+    <label for="jump" class="note">Go back to a part:</label>
+    <select id="jump" aria-label="Go back to a part"></select>
+    <button class="btn small ghost" id="comeback-open">Send me a link to come back</button>
+    <button class="btn small quiet-danger" id="startover">Start over</button>
+  </div>
+
+  <div class="comeback hidden" id="comeback">
+    <p style="margin-top:0"><b>A link that brings you back to your answers.</b></p>
+    <p>Your answers live on this device, in this browser. A come-back link carries a copy of
+    everything you have written so far. Open the link — on this device — and every answer
+    comes back, right where you left it.</p>
+    <label class="flabel" for="cb-email">Your email (so your place is saved with your answers)</label>
+    <input type="text" id="cb-email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+    <p class="note"><b>Honest note:</b> this page cannot send email by itself. In the finished shop,
+    we email this link to you. On this page today, please copy the link or the code below and keep
+    it somewhere safe — a note in your phone works. Treat it like a key: anyone who has it can
+    open your answers.</p>
+    <div class="big-actions"><button class="btn" id="cb-make">Make my come-back link</button></div>
+    <div id="cb-out" class="hidden">
+      <label class="flabel" for="cb-link">Your come-back link</label>
+      <input type="text" id="cb-link" readonly>
+      <label class="flabel" for="cb-code">Your come-back code (the same thing, for copying)</label>
+      <textarea id="cb-code" rows="4" readonly></textarea>
+      <div style="margin-top:10px"><button class="btn small secondary" id="cb-copy">Copy the link</button></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--sage);margin:20px 0">
+    <p><b>Coming back with a code?</b> Paste your link or code here:</p>
+    <textarea id="cb-paste" rows="3" placeholder="Paste your come-back link or code"></textarea>
+    <div style="margin-top:10px"><button class="btn small" id="cb-restore">Bring back my answers</button></div>
+    <p class="note" id="cb-msg"></p>
+  </div>
+</div>
+
+<script src="intake.js"></script>
+<script>
+(function(){
+  "use strict";
+  var I = window.INTAKE;
+  var LS_KEY = "ccb-intake-v1";
+  var card = document.getElementById("card");
+  var bar = document.getElementById("bar");
+  var barLabel = document.getElementById("bar-label");
+  var savedEl = document.getElementById("saved");
+
+  var state = load() || { raw: I.defaultRaw(), idx: 0, screen: "welcome" };
+
+  function load(){
+    try { var s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; }
+  }
+  function save(){
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+    savedEl.textContent = "Your answers save as you go — you can close this and come back anytime.";
+  }
+  function wipeAll(){
+    if (!confirm("Start over? This clears every answer. Are you sure?")) return false;
+    try { localStorage.removeItem(LS_KEY); } catch(e){}
+    state = { raw: I.defaultRaw(), idx: 0, screen: "welcome", email: "" };
+    document.getElementById("resume").classList.add("hidden");
+    renderWelcome();
+    return true;
+  }
+  function refreshJump(){
+    var jump = document.getElementById("jump");
+    var vis = visibleQuestions();
+    var cur = jump.value;
+    jump.innerHTML = "";
+    I.PARTS.forEach(function(name, p){
+      var first = -1;
+      vis.forEach(function(q, i){ if (q.part === p && first < 0) first = i; });
+      if (first < 0) return;
+      var o = document.createElement("option");
+      o.value = first; o.textContent = "Part " + (p + 1) + " — " + name;
+      jump.appendChild(o);
+    });
+    var q = vis[state.idx];
+    if (q) {
+      var mine = -1;
+      vis.forEach(function(v, i){ if (v.part === q.part && mine < 0) mine = i; });
+      jump.value = mine;
+    } else if (cur) jump.value = cur;
+  }
+  function visibleQuestions(){
+    return I.QUESTIONS.filter(function(q){ return !q.petOnly || state.raw.has_pet; });
+  }
+  function esc(s){ return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+  // ---------------------------------------------------------- renderers
+  function fieldInput(qid, field, value){
+    var id = "f-" + qid + "-" + field.key;
+    var attrs = field.last4 ? ' inputmode="numeric" autocomplete="off" maxlength="4" data-last4="1"' : "";
+    return '<label class="flabel" for="' + id + '">' + esc(field.label) + "</label>" +
+      '<input type="text" id="' + id + '" data-q="' + qid + '" data-field="' + field.key + '"' +
+      attrs + ' value="' + esc(value || "") + '">';
+  }
+
+  function renderQuestion(q){
+    var html = '<p class="part">Part ' + (q.part + 1) + " of " + I.PARTS.length + " — " + esc(I.PARTS[q.part]) + "</p>";
+    html += '<h2 class="q">' + esc(q.q) + "</h2>";
+    html += '<p class="help">' + esc(q.help) + "</p>";
+    var v = state.raw[q.id];
+
+    if (q.type === "text") {
+      html += '<input type="text" id="in" data-q="' + q.id + '" value="' + esc(v || "") + '">';
+    } else if (q.type === "textarea") {
+      html += '<textarea id="in" data-q="' + q.id + '" rows="6">' + esc(v || "") + "</textarea>";
+    } else if (q.type === "choice-single") {
+      html += '<div class="chips" role="group">';
+      q.options.forEach(function(o){
+        html += '<button class="chip" data-choice="' + esc(o) + '" aria-pressed="' + (v === o) + '">' + esc(o) + "</button>";
+      });
+      html += "</div>";
+    } else if (q.type === "gate") {
+      html += '<div class="chips" role="group">' +
+        '<button class="chip" data-gate="yes" aria-pressed="' + (state.raw.has_pet === true) + '">Yes, there is a pet</button>' +
+        '<button class="chip" data-gate="no" aria-pressed="' + (state.raw.has_pet === false) + '">No pet</button></div>';
+    } else if (q.type === "fields") {
+      var fv = v || {};
+      q.fields.forEach(function(f){ html += fieldInput(q.id, f, fv[f.key]); });
+      if (q.fields.some(function(f){ return f.last4; }))
+        html += '<p class="note">Last 4 digits only — the box will not accept more. The full number never goes in the binder.</p>';
+    } else if (q.type === "list-text") {
+      var items = Array.isArray(v) ? v : [];
+      html += '<div id="rows">';
+      items.forEach(function(t, i){
+        html += '<div class="entry"><div class="entry-head"><b>Item ' + (i + 1) + '</b>' +
+          '<button class="btn small danger" data-del="' + i + '">Remove</button></div>' +
+          '<input type="text" data-row="' + i + '" value="' + esc(t) + '"></div>';
+      });
+      html += "</div>" + '<button class="btn small secondary" id="add">+ Add another</button>';
+    } else if (q.type === "list-obj" || q.type === "med-list") {
+      var fields = q.type === "med-list" ? I.MED_FIELDS : q.fields;
+      var rows = Array.isArray(v) ? v : [];
+      html += '<div id="rows">';
+      rows.forEach(function(e, i){
+        html += '<div class="entry"><div class="entry-head"><b>Entry ' + (i + 1) + '</b>' +
+          '<button class="btn small danger" data-del="' + i + '">Remove</button></div>';
+        fields.forEach(function(f){ html += fieldInput(q.id + "-" + i, f, e[f.key]); });
+        html += "</div>";
+      });
+      html += "</div>" + '<button class="btn small secondary" id="add">+ Add another</button>';
+      if (fields.some(function(f){ return f.last4; }))
+        html += '<p class="note">Last 4 digits only — the box will not accept more. The full number never goes in the binder.</p>';
+    } else if (q.type === "checklist") {
+      var cur = Array.isArray(v) ? v : [];
+      var pool = I.PRELOADS[q.preload].concat(cur.filter(function(t){ return I.PRELOADS[q.preload].indexOf(t) < 0; }));
+      html += '<div id="checks">';
+      pool.forEach(function(t){
+        html += '<label class="checkrow"><input type="checkbox" data-check="' + esc(t) + '"' +
+          (cur.indexOf(t) >= 0 ? " checked" : "") + "><span>" + esc(t) + "</span></label>";
+      });
+      html += "</div>" +
+        '<label class="flabel" for="custom">Add your own item</label>' +
+        '<input type="text" id="custom" placeholder="Type it, then tap Add">' +
+        '<div style="margin-top:10px"><button class="btn small secondary" id="addcustom">Add</button></div>';
+    } else if (q.type === "choice-detail") {
+      var cv = v || { choices: [], detail: "" };
+      html += '<div class="chips" role="group">';
+      q.choices.forEach(function(c){
+        html += '<button class="chip" data-chip="' + esc(c) + '" aria-pressed="' + (cv.choices.indexOf(c) >= 0) + '">' + esc(c) + "</button>";
+      });
+      html += "</div>" +
+        '<label class="flabel" for="detail">Anything else? Where things are, what is missing, what is tricky:</label>' +
+        '<textarea id="detail" rows="4">' + esc(cv.detail || "") + "</textarea>";
+    }
+
+    html += '<div class="nav">' +
+      '<button class="btn secondary" id="back"' + (state.idx === 0 ? " disabled style=\"opacity:.45\"" : "") + ">← Back</button>" +
+      '<button class="btn" id="next">' + (state.idx >= visibleQuestions().length - 1 ? "Finish →" : "Continue →") + "</button></div>";
+    card.innerHTML = html;
+    wire(q);
+    var vis = visibleQuestions();
+    var pos = vis.indexOf(q);
+    bar.style.width = Math.round(((pos + 1) / vis.length) * 100) + "%";
+    barLabel.textContent = "Part " + (q.part + 1) + " of " + I.PARTS.length + " — take your time" +
+      " · Question " + (pos + 1) + " of " + vis.length;
+    refreshJump();
+    window.scrollTo(0, 0);
+  }
+
+  function wire(q){
+    var raw = state.raw;
+    function setVal(val){ raw[q.id] = val; save(); }
+
+    var single = document.getElementById("in");
+    if (single) single.addEventListener("input", function(){ setVal(single.value); });
+
+    card.querySelectorAll("[data-choice]").forEach(function(b){
+      b.addEventListener("click", function(){ setVal(b.getAttribute("data-choice")); renderQuestion(q); });
+    });
+    card.querySelectorAll("[data-gate]").forEach(function(b){
+      b.addEventListener("click", function(){
+        raw.has_pet = b.getAttribute("data-gate") === "yes"; save(); renderQuestion(q);
+      });
+    });
+    card.querySelectorAll("input[data-field]").forEach(function(inp){
+      inp.addEventListener("input", function(){
+        if (inp.hasAttribute("data-last4"))
+          inp.value = inp.value.replace(/\D/g, "").slice(-4);
+        var key = inp.getAttribute("data-q"), field = inp.getAttribute("data-field");
+        if (key === q.id) {                       // fields type
+          var o = raw[q.id] || {}; o[field] = inp.value; raw[q.id] = o;
+        } else {                                  // list-obj / med-list row
+          var rowIdx = parseInt(key.split("-").pop(), 10);
+          var list = Array.isArray(raw[q.id]) ? raw[q.id] : [];
+          var e = list[rowIdx] || {}; e[field] = inp.value; list[rowIdx] = e; raw[q.id] = list;
+        }
+        save();
+      });
+    });
+    card.querySelectorAll("input[data-row]").forEach(function(inp){
+      inp.addEventListener("input", function(){
+        var list = Array.isArray(raw[q.id]) ? raw[q.id] : [];
+        list[parseInt(inp.getAttribute("data-row"), 10)] = inp.value; raw[q.id] = list; save();
+      });
+    });
+    var add = document.getElementById("add");
+    if (add) add.addEventListener("click", function(){
+      var list = Array.isArray(raw[q.id]) ? raw[q.id] : [];
+      list.push(q.type === "list-text" ? "" : {}); raw[q.id] = list; save(); renderQuestion(q);
+    });
+    card.querySelectorAll("[data-del]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var list = Array.isArray(raw[q.id]) ? raw[q.id] : [];
+        list.splice(parseInt(b.getAttribute("data-del"), 10), 1); raw[q.id] = list; save(); renderQuestion(q);
+      });
+    });
+    card.querySelectorAll("input[data-check]").forEach(function(cb){
+      cb.addEventListener("change", function(){
+        var t = cb.getAttribute("data-check");
+        var list = Array.isArray(raw[q.id]) ? raw[q.id].slice() : [];
+        if (cb.checked && list.indexOf(t) < 0) list.push(t);
+        if (!cb.checked) list = list.filter(function(x){ return x !== t; });
+        raw[q.id] = list; save();
+      });
+    });
+    var addCustom = document.getElementById("addcustom");
+    if (addCustom) addCustom.addEventListener("click", function(){
+      var inp = document.getElementById("custom");
+      var t = inp.value.trim(); if (!t) return;
+      var list = Array.isArray(raw[q.id]) ? raw[q.id].slice() : [];
+      if (list.indexOf(t) < 0) list.push(t);
+      raw[q.id] = list; save(); renderQuestion(q);
+    });
+    card.querySelectorAll("[data-chip]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var cur = raw[q.id] || { choices: [], detail: "" };
+        var c = b.getAttribute("data-chip");
+        var i = cur.choices.indexOf(c);
+        if (i >= 0) cur.choices.splice(i, 1); else cur.choices.push(c);
+        raw[q.id] = cur; save(); renderQuestion(q);
+      });
+    });
+    var detail = document.getElementById("detail");
+    if (detail) detail.addEventListener("input", function(){
+      var cur = raw[q.id] || { choices: [], detail: "" };
+      cur.detail = detail.value; raw[q.id] = cur; save();
+    });
+
+    document.getElementById("back").addEventListener("click", function(){
+      if (state.idx > 0) { state.idx--; save(); renderQuestion(visibleQuestions()[state.idx]); }
+    });
+    document.getElementById("next").addEventListener("click", function(){
+      var vis = visibleQuestions();
+      if (state.idx >= vis.length - 1) { state.screen = "finish"; save(); renderFinish(); }
+      else { state.idx++; save(); renderQuestion(vis[state.idx]); }
+    });
+  }
+
+  // ---------------------------------------------------------- screens
+  function renderWelcome(){
+    bar.style.width = "0%"; barLabel.textContent = "";
+    card.innerHTML =
+      '<p class="part">Before you start</p>' +
+      "<h2 class=\"q\">This takes about 30 to 45 minutes. You do not have to finish it in one sitting.</h2>" +
+      "<p>Answer one question at a time. Every question tells you exactly what to write and why we ask it. " +
+      "There are no wrong answers — you are the world's expert on your loved one.</p>" +
+      "<p><b>Your answers are saved on this device as you go.</b> Close the page, come back tomorrow, " +
+      "pick up where you left off. Nothing leaves this device until you choose to send it at the end.</p>" +
+      "<p>You can also tap <b>“Send me a link to come back”</b> below, any time, to make a come-back " +
+      "link and code that hold all your answers — and go back to any part, any time, with the part list below.</p>" +
+      '<p class="warn"><b>One rule protects you:</b> we only ever ask for the <b>last 4 digits</b> of any ' +
+      "insurance or account number. Never type a full number anywhere in this form.</p>" +
+      '<div class="big-actions"><button class="btn" id="start">Start the questions →</button></div>';
+    document.getElementById("start").addEventListener("click", function(){
+      state.screen = "questions"; save(); renderQuestion(visibleQuestions()[state.idx]);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function renderFinish(){
+    bar.style.width = "100%"; barLabel.textContent = "Done";
+    var answers = I.assembleAnswers(state.raw);
+    var json = JSON.stringify(answers, null, 2);
+    var name = (answers.loved_one.called_name || answers.loved_one.full_name || "your loved one");
+    var mailSubject = encodeURIComponent("Care Binder intake answers — " + name);
+    var mailBody = encodeURIComponent(json);
+    var tooLong = mailBody.length > 60000;
+    card.innerHTML =
+      '<p class="part">Finished</p>' +
+      "<h2 class=\"q\">That's everything. Thank you.</h2>" +
+      "<p>Your answers are complete. Send them to us and we build the binder — written out, " +
+      "organized, ready to print — and email it back to you within 24 to 48 hours.</p>" +
+      "<p><b>Step 1:</b> tap the button below to download your answers as a file.</p>" +
+      '<div class="big-actions"><button class="btn" id="dl">Download my answers</button></div>' +
+      "<p style=\"margin-top:22px\"><b>Step 2:</b> email that file to us at the address in your " +
+      "order confirmation — or tap below to open an email with your answers already inside it.</p>" +
+      '<div class="big-actions"><a class="btn btnlink" id="maillink" href="mailto:?subject=' + mailSubject +
+        "&body=" + (tooLong ? "" : mailBody) + '">Email my answers</a></div>' +
+      (tooLong ? '<p class="note">Your answers are long, so the email opens empty — please attach the file you downloaded in Step 1.</p>' : "") +
+      '<div style="margin-top:26px"><label class="flabel" for="bk-email">Optional: a backup email for your finished binder</label>' +
+      '<input type="text" id="bk-email" inputmode="email" autocomplete="email" placeholder="you@example.com">' +
+      '<p class="note">We send your finished binder to the email address you send your answers from. ' +
+      'If you put a second address here — your other inbox, or a family member you trust — we send it there too, ' +
+      'so your binder lives in two places.</p></div>' +
+      '<p class="note" style="margin-top:22px"><b>Keep that answers file somewhere safe.</b> ' +
+      'We do not keep any of your information. Once your binder is generated and sent to you, ' +
+      'all of your information is deleted from our side. If you lose your binder file and your answers file, ' +
+      'you would need to order a new binder — that is why the backup email above is worth filling in.</p>' +
+      '<p class="note" style="margin-top:22px">Want to change something? <a href="#" id="backin">Go back to the questions</a>. ' +
+      'Starting a brand-new binder? <a href="#" id="wipe">Clear everything and start over</a>.</p>';
+    var jsonNow = json;
+    function refreshDelivery(){
+      var a2 = I.assembleAnswers(state.raw);
+      var bk = document.getElementById("bk-email").value.trim();
+      if (bk) a2.delivery_backup_email = bk;
+      jsonNow = JSON.stringify(a2, null, 2);
+      var b2 = encodeURIComponent(jsonNow);
+      document.getElementById("maillink").href = "mailto:?subject=" + mailSubject +
+        "&body=" + (b2.length > 60000 ? "" : b2);
+    }
+    document.getElementById("bk-email").addEventListener("input", refreshDelivery);
+    document.getElementById("dl").addEventListener("click", function(){
+      var blob = new Blob([jsonNow], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "care-binder-answers.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+    });
+    document.getElementById("backin").addEventListener("click", function(e){
+      e.preventDefault(); state.screen = "questions";
+      state.idx = visibleQuestions().length - 1; save(); renderQuestion(visibleQuestions()[state.idx]);
+    });
+    document.getElementById("wipe").addEventListener("click", function(e){
+      e.preventDefault(); wipeAll();
+    });
+    window.scrollTo(0, 0);
+  }
+
+  // ---------------------------------------------------------- boot
+  var resumeEl = document.getElementById("resume");
+  var hadProgress = state.idx > 0 || Object.keys(state.raw).length > 2;
+  if (hadProgress && state.screen !== "finish") resumeEl.classList.remove("hidden");
+  document.getElementById("resume-go").addEventListener("click", function(){
+    resumeEl.classList.add("hidden"); state.screen = "questions"; save();
+    renderQuestion(visibleQuestions()[state.idx]);
+  });
+  document.getElementById("resume-fresh").addEventListener("click", function(){ wipeAll(); });
+
+  // ------------------------------------------------ save-and-resume controls
+  document.getElementById("startover").addEventListener("click", function(){ wipeAll(); });
+  document.getElementById("jump").addEventListener("change", function(){
+    var target = parseInt(this.value, 10);
+    if (isNaN(target)) return;
+    state.idx = target; state.screen = "questions"; save();
+    renderQuestion(visibleQuestions()[state.idx]);
+  });
+  var cbPanel = document.getElementById("comeback");
+  document.getElementById("comeback-open").addEventListener("click", function(){
+    cbPanel.classList.toggle("hidden");
+    var em = document.getElementById("cb-email");
+    if (state.email && !em.value) em.value = state.email;
+  });
+  document.getElementById("cb-make").addEventListener("click", function(){
+    state.email = document.getElementById("cb-email").value.trim(); save();
+    var code = I.RESUME.encode(state);
+    var link = location.href.split("#")[0] + "#r=" + code;
+    document.getElementById("cb-link").value = link;
+    document.getElementById("cb-code").value = code;
+    document.getElementById("cb-out").classList.remove("hidden");
+    document.getElementById("cb-msg").textContent =
+      "Your link and code are ready above. Copy one and keep it somewhere safe.";
+  });
+  document.getElementById("cb-copy").addEventListener("click", function(){
+    var link = document.getElementById("cb-link");
+    link.select();
+    if (navigator.clipboard) navigator.clipboard.writeText(link.value);
+    else document.execCommand("copy");
+    document.getElementById("cb-msg").textContent = "Copied. Keep it somewhere safe — it is the key to your answers.";
+  });
+  document.getElementById("cb-restore").addEventListener("click", function(){
+    try {
+      var back = I.RESUME.decode(document.getElementById("cb-paste").value);
+      restoreState(back, "Your answers are back, right where you left them.");
+    } catch (err) {
+      document.getElementById("cb-msg").textContent = err.message;
+    }
+  });
+  function restoreState(back, msg){
+    state = { raw: back.raw, idx: back.idx || 0, screen: "questions", email: back.email || state.email || "" };
+    var vis = visibleQuestions();
+    if (state.idx >= vis.length) state.idx = vis.length - 1;
+    if (state.idx < 0) state.idx = 0;
+    save();
+    resumeEl.classList.add("hidden");
+    renderQuestion(vis[state.idx]);
+    savedEl.textContent = msg;
+  }
+
+  // a come-back link (#r=<code>) restores everything on arrival
+  if (location.hash.indexOf("#r=") === 0) {
+    try { restoreState(I.RESUME.decode(location.hash), "Welcome back — your answers came back with you."); }
+    catch (err) { /* a bad link never blocks the page; the paste box can retry */ }
+  }
+
+  if (state.screen === "finish") renderFinish();
+  else if (state.screen === "questions") renderQuestion(visibleQuestions()[state.idx]);
+  else renderWelcome();
+})();
+</script>
+<script data-goatcounter="https://cherishwyn.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
