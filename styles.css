@@ -402,3 +402,8 @@ footer .disclaimer{font-size:13.5px;color:#8A7F71}
 .adfilm video{width:100%;max-width:400px;height:auto;display:block;margin:26px auto 0;
   border-radius:16px;box-shadow:var(--shadow);background:#000}
 .adfilm-note{margin-top:18px;font-size:17px;color:var(--body)}
+
+/* Hero buy row + repeated scenarios (added Nov 28, 2026 at Douglas's order) */
+.hero-buy{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:20px 0 4px}
+.hero-buy s{opacity:.65;font-weight:400}
+.echo{padding:56px 0}
