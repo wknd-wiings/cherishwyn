@@ -80,6 +80,7 @@
   .checkrow span{font-size:18px}
   .note{font-size:15px;color:var(--gray)}
   .warn{background:#FBF3DC;border:1px solid var(--bronze);border-radius:10px;padding:12px 14px;font-size:16px}
+  .reqwarn{color:var(--red);font-weight:bold;margin:14px 0 0}
   .big-actions{display:grid;gap:14px;margin-top:18px}
   a.btnlink{display:inline-block;text-decoration:none;text-align:center}
   .resume{background:var(--band);border:1px solid var(--bronze);border-radius:12px;
@@ -211,6 +212,7 @@
     var html = '<p class="part">Part ' + (q.part + 1) + " of " + I.PARTS.length + " — " + esc(I.PARTS[q.part]) + "</p>";
     html += '<h2 class="q">' + esc(q.q) + "</h2>";
     html += '<p class="help">' + esc(q.help) + "</p>";
+    html += '<p id="reqwarn" class="reqwarn hidden"></p>';
     var v = state.raw[q.id];
 
     if (q.type === "text") {
@@ -374,6 +376,14 @@
       if (state.idx > 0) { state.idx--; save(); renderQuestion(visibleQuestions()[state.idx]); }
     });
     document.getElementById("next").addEventListener("click", function(){
+      if (q.required && !String(state.raw[q.id] || "").trim()) {
+        var w = document.getElementById("reqwarn");
+        w.textContent = "We need this one before we can go on — your binder can't be built without it. Type your Etsy order number, or the email address on your payment receipt.";
+        w.classList.remove("hidden");
+        var inp = document.getElementById("in");
+        if (inp) inp.focus();
+        return;
+      }
       var vis = visibleQuestions();
       if (state.idx >= vis.length - 1) { state.screen = "finish"; save(); renderFinish(); }
       else { state.idx++; save(); renderQuestion(vis[state.idx]); }
@@ -388,6 +398,10 @@
       "<h2 class=\"q\">This takes about 30 to 45 minutes. You do not have to finish it in one sitting.</h2>" +
       "<p>Answer one question at a time. Every question tells you exactly what to write and why we ask it. " +
       "There are no wrong answers — you are the world's expert on your loved one.</p>" +
+      "<p><b>Have one thing handy before you start:</b> your order number. If you bought on Etsy, it is " +
+      "in your Etsy order confirmation. If you bought on our website, have the email address from your " +
+      "payment receipt. The very first question asks for it — we build one binder per order, and it is " +
+      "how we know the answers are really yours.</p>" +
       "<p><b>Your answers are saved on this device as you go.</b> Close the page, come back tomorrow, " +
       "pick up where you left off. Nothing leaves this device until you choose to send it at the end.</p>" +
       "<p>You can also tap <b>“Send me a link to come back”</b> below, any time, to make a come-back " +
@@ -403,6 +417,19 @@
 
   function renderFinish(){
     bar.style.width = "100%"; barLabel.textContent = "Done";
+    if (!String(state.raw.order_proof || "").trim()) {
+      card.innerHTML =
+        '<p class="part">Finished — almost</p>' +
+        "<h2 class=\"q\">One thing is missing: your order number.</h2>" +
+        '<p class="help">We build one binder per order, so your answers can only be sent with the order number from your Etsy order confirmation — or the email address on your payment receipt. It is the very first question.</p>' +
+        '<div class="big-actions"><button class="btn" id="gotoorder">Go to the first question</button></div>';
+      document.getElementById("gotoorder").addEventListener("click", function(){
+        state.screen = "questions"; state.idx = 0; save();
+        renderQuestion(visibleQuestions()[0]);
+      });
+      window.scrollTo(0, 0);
+      return;
+    }
     var answers = I.assembleAnswers(state.raw);
     var json = JSON.stringify(answers, null, 2);
     var name = (answers.loved_one.called_name || answers.loved_one.full_name || "your loved one");

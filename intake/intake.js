@@ -12,6 +12,14 @@
    language, the night, falls & transfers, medical history,
    home readings, driving, house systems, will/POLST locations, bills,
    final wishes & hospice, and the after-loss first calls.
+   Plus one more build addition, flagged where it appears:
+     + order_proof (Part 0, asked first) — the "harder lock" (Douglas,
+       Nov 27, 2026): the questionnaire link is public, so the first
+       question asks for the buyer's Etsy order number or the email on
+       their payment receipt. One binder is built per order; a
+       submission without it is not built. It rides at the top level of
+       the assembled answers as `order_proof` (only when given, so the
+       example-persona proof still matches byte for byte).
    Every question carries a one-line plain explanation of what to write
    and why it is asked (the Spell-It-Out standard, Douglas Nov 26 2026).
 */
@@ -55,6 +63,10 @@ const PRELOADS = {
    med-list | checklist | choice-detail | gate                        */
 const QUESTIONS = [
   // ---------------------------------------------------------- Part 0
+  // BUILD ADDITION (the lock, Nov 27, 2026): asked first, required.
+  { id: "order_proof", part: 0, type: "text", required: true,
+    q: "Your order number — or the email on your payment receipt",
+    help: "If you bought on Etsy, type your Etsy order number — it is in your Etsy order confirmation. If you bought on our website, type the email address on your Stripe payment receipt. We build one binder per order, and this is how we know it is really your order. Your binder can't be built without it." },
   { id: "full_name", part: 0, type: "text",
     q: "What is your loved one's full name?",
     help: "Write the full legal name, like it appears on their insurance card. Doctors and hospitals use this name." },
@@ -566,6 +578,10 @@ function assembleAnswers(raw) {
       food: str(raw, "pet_food"), notes: str(raw, "pet_notes"), week_care: str(raw, "pet_week"),
     };
   }
+  // The lock (build addition): carried only when given, so a submission
+  // without it is visibly unmatched and the persona proof is unchanged.
+  const proof = str(raw, "order_proof");
+  if (proof) answers.order_proof = proof;
   return answers;
 }
 
